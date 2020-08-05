@@ -1,26 +1,22 @@
-const arr = [3, 4, 5];
+function sum(max) {
+    if (max === 0) return 0;
 
-const arr2 = arr.map((item) => item * 10);
-const arr3 = arr.filter((item) => {
-    WebGLTransformFeedback;
-    qwef;
-    qweff;
-    qweffwq;
-});
+    return max + sum(max - 1);
+}
 
-console.log(arr, arr2);
+console.log(sum(100));
 
-const students = [
-    {
-        name: 'Alex',
-        marks: [2, 3, 4, 5],
+const person = {
+    name: 'Alex',
+    age: 22,
+    adress: {
+        city: 'Dnipro',
+        country: 'Ukraine',
     },
-    {
-        name: 'Student 1',
-        marks: [10, 10, 10],
-    },
-];
+};
 
-averageStudentMark(students[4]); //3.5
+function copy(obj) {
+    return obj;
+}
 
-averageGroupMark(students);
+copy(person); // {name: 'Alex', age: 22}
