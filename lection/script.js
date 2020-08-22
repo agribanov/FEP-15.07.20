@@ -1,29 +1,28 @@
-document.getElementById('result').addEventListener('click', onUlClick);
+let counts = 0;
 
-function onUlClick(e) {
-    if (e.target.classList.contains('liItem')) {
-        e.target.classList.toggle('red');
-    }
-}
+const counter = {
+    inc: function () {
+        counts++;
+    },
+    dec: function () {
+        dec--;
+    },
+    add: function () {
+        counts += 45;
+    },
+    log: function () {
+        console.log(name, counts);
+    },
+};
 
-// document.addEventListener(
-//     'click',
-//     (e) => {
-//         console.log('clicked on document on capturing', e.target);
-//     },
-//     true
-// );
-// document.addEventListener('click', (e) =>
-//     console.log('clicked on document on bubbling', e.target)
-// );
-// document.body.addEventListener('click', (e) =>
-//     console.log('clicked on body', e.target)
-// );
-// document.getElementById('result').addEventListener('click', (e) => {
-//     e.stopPropagation();
+// const counter = createCounter('counter 1');
+const counter2 = createCounter('counter 1');
+const counter3 = createCounter('counter 1');
+const counter4 = createCounter('counter 1');
 
-//     console.log('clicked on result', e.target);
-// });
-// document.getElementById('secondLi').addEventListener('click', (e) => {
-//     console.log('clicked on li', e.target);
-// });
+counter.inc();
+counter.inc();
+counter.add(45);
+counter.log();
+
+counter2.inc();
