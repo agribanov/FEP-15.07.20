@@ -1,0 +1,10 @@
+.accordeon-content {
+    display: none;
+}
+.accordeon-title {
+    background-color: aliceblue;
+    border: 1px solid red;
+}
+.accordeon-visible .accordeon-content {
+    display: block;
+}

@@ -3,6 +3,10 @@ function Hamburger(size) {
     this.toppings = [];
 }
 
+Hamburger.calcSum = function (arr, propertyName, initialValue) {
+    return arr.reduce((sum, item) => sum + item[propertyName], initialValue);
+};
+
 Hamburger.SIZE_SMALL = {
     price: 50,
     calories: 20,
@@ -39,10 +43,7 @@ Hamburger.TOPPING_POTATO = {
 };
 
 Hamburger.prototype.getCallories = function () {
-    return this.toppings.reduce(
-        (sum, topping) => sum + topping.calories,
-        this.size.calories
-    );
+    Hamburger.calcSum(this.toppings, 'callories', this.size.callories);
 };
 
 Hamburger.prototype.getPrice = function () {
