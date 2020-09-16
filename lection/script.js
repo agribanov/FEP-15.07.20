@@ -4,38 +4,57 @@
 // Инкапсуляция
 // Полиморфизм
 
-// function Animal() {}
+// red
+// blue
+// white
 
-// Animal.prototype.run = function () {
-//     console.log('animal is running', this.name);
-// };
-
-// function Cat(name) {
-//     this.name = name;
+// function createTemaplate(template) {
+//     return function (obj) {
+//         return Object.keys(obj).reduce(
+//             (str, key) => str.replace('{{' + key + '}}', obj[key]),
+//             template
+//         );
+//     };
 // }
 
-// Cat.prototype = new Animal(); // {}
+// const userTemplate = createTemaplate('Hello, {{name}}! {{age}}');
 
-// Cat.prototype.myau = function () {
-//     console.log('Nyau', this.name);
-// };
+// console.log(userTemplate({ name: 'Alex', age: 22 }));
+// console.log(userTemplate({ name: 'Bob', age: 55 }));
+// console.log(userTemplate({ name: 'Smith', age: 2222 }));
 
-// const bob = new Cat('bob');
-// const anim = new Animal();
-// // const bob1 = new Cat('bob1');
-// // const bob2 = new Cat('bob2');
-// // const bob3 = new Cat('bob3');
+const students = [
+    {
+        name: 'John Smith',
+        marks: [10, 8, 6, 9, 8, 0, 7],
+    },
+    {
+        name: 'John Doe',
+        marks: [9, 8, 7, 6, 0, 7],
+    },
+    {
+        name: 'Thomas Anderson',
+        marks: [6, 7, 10, 8],
+    },
+    {
+        name: 'Jean-Baptiste Emanuel Zorg',
+        marks: [10, 9, 8, 9],
+    },
+];
 
+// studentAvarageMark(students[1]);
+// studentAvarageMark();
 
-
-function Stundent(//...){
-    // ....
+function studentAvarageMark(greeting, bye) {
+    console.log(greeting, this.name, arrayAvg(this.marks), bye);
+    return arrayAvg(this.marks);
 }
 
-const john = new students('John', [10, 9, 10, 9]);
-const bob = new students('sadf', [10, 9, 10, 9]);
-const asdf = new students('asdf', [10, 9, 10, 9]);
-const asdf = new students('aa', [10, 9, 10, 9]);
+function arrayAvg(arr) {
+    return arr.reduce((sum, num) => sum + num) / arr.length;
+}
 
-console.log(john.avarageMark()) // John - 9.5
- 
+// studentAvarageMark('Hi')
+
+studentAvarageMark.call(students[0], 'Hi', 'Bye-Bye');
+studentAvarageMark.apply(students[0], ['Hi', 'Bye-Bye']);
