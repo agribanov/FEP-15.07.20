@@ -1,43 +1,70 @@
-new Accordeon(document.querySelector('#container'));
+fetch('https://jsonplaceholder.typicode.com/posts')
+    .then((res) => res.json())
+    .then((data) => console.log(data));
 
-http(s)
+// 1) Pending
+// 2) Resolved
+// 3) Rejected
 
-URL 
-    protocol http/https
-    domain
-    path
-    queryParameter
+// document.addEventListener('click', function () {});
 
-METHOD
-    GET
-    POST *
-    PUT *
-    DELETE
-    OPTIONS
-    PATCH *
+// function rec(i) {
+//     console.log(i);
+//     rec(i + 1);
+// }
 
-BODY - тело
+// rec(0);
 
-HEADERS - Служебная информация
+// setInterval(function () {
+//     console.log('long function 100ms');
+// }, 50);
 
+// function onTimeout() {
+//     console.log('long function 100ms');
+//     setTimeout(onTimeout, 50);
+// }
 
-STATUS
-    100
-        101
+// setTimeout(onTimeout, 50);
 
-    200
-        204
-        201
+// new Accordeon(document.querySelector('#container'));
 
-    300
-        301
-        302
+// http(s)
 
-    400
-        404
-        401
-        403
+// URL
+//     protocol http/https
+//     domain
+//     path
+//     queryParameter
 
-    500
-        503
-        502
+// METHOD
+//     GET
+//     POST *
+//     PUT *
+//     DELETE
+//     OPTIONS
+//     PATCH *
+
+// BODY - тело
+
+// HEADERS - Служебная информация
+
+// STATUS
+//     100
+//         101
+
+//     200
+//         204
+//         201
+
+//     300
+//         301
+//         302
+
+//     400
+//         404
+//         401
+//         403
+
+//     500
+//         503
+//         502

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Users</title>
+        <link rel="stylesheet" href="./styles.css" />
+        <script src="./script.js" defer></script>
+    </head>
+    <body>
+        <h1>Users</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Marks</th>
+                    <th>Average</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="studentsList"></tbody>
+            <tfoot>
+                <tr>
+                    <th>Group</th>
+                    <th></th>
+                    <th id="groupAvarageMark"></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td><input type="text" id="studentName" /></td>
+                    <td><input type="text" id="studentMarks" /></td>
+                    <td></td>
+                    <td><button id="addBtn">Save</button></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <script type="text/template" id="studentTemplate">
+            <tr class="item" data-id="{{id}}">
+                <td>{{name}}</td>
+                <td>{{marks}}</td>
+                <td>{{averageMark}}</td>
+                <td><button class="delete-btn">Delete</button></td>
+            </tr>
+        </script>
+    </body>
+</html>

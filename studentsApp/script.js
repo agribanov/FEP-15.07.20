@@ -1,14 +1,15 @@
 'use strict';
 
-const STORAGE_KEY = 'asfasdfsaf';
+const STORAGE_KEY = 'studentsList';
 const DELETE_BTN_CLASS = 'delete-btn';
 const ITEM_CLASS = 'item';
 
-const listEl = document.getElementById('usersList');
-const nameInputEl = document.getElementById('userName');
-const phoneInputEl = document.getElementById('userPhone');
-const addBtnEl = document.getElementById('addUserBtn');
-const userTemplate = document.getElementById('userTemplate').innerHTML;
+const groupAvarageMarkEl = document.getElementById('groupAvarageMark');
+const listEl = document.getElementById('studentsList');
+const nameInputEl = document.getElementById('studentName');
+const marksInputEl = document.getElementById('studentMarks');
+const addBtnEl = document.getElementById('addBtn');
+const studentTemplate = document.getElementById('studentTemplate').innerHTML;
 
 let list = [];
 
@@ -18,49 +19,42 @@ listEl.addEventListener('click', onListElClick);
 init();
 
 function onAddBtnClick() {
-    console.log('AddBtn click');
     submitForm();
 }
 
 function onListElClick(e) {
     switch (true) {
         case e.target.classList.contains(DELETE_BTN_CLASS):
-            deleteUser(e.target.closest('.' + ITEM_CLASS));
+            deleteStudent(e.target.closest('.' + ITEM_CLASS));
     }
 }
 
 // Инициализация приложения при старте
 function init() {
     // восстанавливаем данные из хранилища
-    // restoreData();
+    restoreData();
     // рендерим список, который взяли из хранилища
-    // renderList(list);
+    renderList(list);
 
-    getData();
+    updateGroupAverage();
 
     console.log('list', list);
-}
-
-function getData() {
-    fetch('https://jsonplaceholder.typicode.com/photos?albumId=3')
-        .then((res) => res.json())
-        .then((data) => renderList(data));
 }
 
 // Сохранение юзера
 function submitForm() {
     // Проверяем, что все введенное пользователем валидно
     if (isFormValid()) {
-        // Если да, сохраняем
-        // Создаем новый обьект
-        const userObj = {
+        const marksArray = studentMarks.value.split(',').map((num) => +num);
+        const studentObj = {
             id: Date.now(),
             name: nameInputEl.value,
-            phone: phoneInputEl.value,
+            marks: marksArray,
+            averageMark: arrayAvg(marksArray),
         };
 
         // Передаем в вфункцию для добавления в список
-        addUser(userObj);
+        addStudent(studentObj);
 
         // Сбарсываем форму
         resetForm();
@@ -70,52 +64,37 @@ function submitForm() {
     }
 }
 
-function addUser(user) {
-    console.log('adding user', user);
+function addStudent(student) {
     // Добавляем новый обьект в список
-    list.push(user);
+    list.push(student);
     // Сохраняем список в хранилище
     saveData();
 
+    updateGroupAverage();
+
     // Рендерим юзера
-    renderUser(user);
+    renderStudent(student);
 }
 
-function renderUser(user) {
-    console.log(Object.keys(user));
-
+function renderStudent(student) {
     // Из всех полей юзера собираем html из шаблона
-    const html = Object.keys(user).reduce(
-        (template, key) => template.replace('{{' + key + '}}', user[key]),
-        userTemplate
+    const html = Object.keys(student).reduce(
+        (template, key) => template.replace('{{' + key + '}}', student[key]),
+        studentTemplate
     );
-
-    // const keys = Object.keys(user);
-    // let html = userTemplate;
-
-    // for(let i=0; i<keys.length; i++){
-    //     html = html.replace('{{'+keys[i]+'}}', user[keys[i]])
-    // }
-
-    // const html = userTemplate
-    //     .replace('{{id}}', user.id)
-    //     .replace('{{name}}', user.name)
-    //     .replace('{{phone}}', user.phone);
 
     // Вставляем его в ДОМ
     listEl.insertAdjacentHTML('beforeend', html);
-
-    console.log(html);
 }
 
-function renderList(usersList) {
+function renderList(studentsList) {
     // Для всех елементов списка вызываем функцию рендера, которая вставит для всех html
-    usersList.forEach((item) => renderUser(item));
+    studentsList.forEach((item) => renderStudent(item));
 }
 
-function deleteUser(userEl) {
+function deleteStudent(studentEl) {
     // Берем ид юзера, которого нужно удалить
-    const id = +userEl.dataset.id;
+    const id = +studentEl.dataset.id;
 
     // Создаем новый список, на основе старого. В ноый берем только элементы, у которых ид не тот, который нужно удалить
     list = list.filter((item) => item.id !== id);
@@ -123,18 +102,39 @@ function deleteUser(userEl) {
     // Сохраняем список в хранилище
     saveData();
 
+    updateGroupAverage();
+
     // Удаляем элемент, который отображает конкртеного юзера
-    userEl.remove();
+    studentEl.remove();
 }
 
 function isFormValid() {
     //return nameInputEl.value && phoneInputEl.value; // Тоже самое
-    return nameInputEl.value !== '' && phoneInputEl.value !== '';
+    return nameInputEl.value !== '' && isMarksInputValid();
+}
+
+function isMarksInputValid() {
+    return (
+        marksInputEl.value !== '' && !marksInputEl.value.split(',').find(isNaN)
+    );
 }
 
 function resetForm() {
     nameInputEl.value = '';
-    phoneInputEl.value = '';
+    marksInputEl.value = '';
+}
+
+function updateGroupAverage() {
+    groupAvarageMarkEl.textContent = groupAvarageMark(list);
+}
+
+function groupAvarageMark(studentsList) {
+    const allMarks = studentsList.flatMap((student) => student.marks);
+    return arrayAvg(allMarks);
+}
+
+function arrayAvg(arr) {
+    return arr.length ? arr.reduce((sum, num) => sum + num) / arr.length : 0;
 }
 
 function saveData() {
