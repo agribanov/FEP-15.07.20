@@ -1,32 +1,102 @@
-fetch('https://jsonplaceholder.typicode.com/posts')
-    .then((res) => res.json())
-    .then((data) => console.log(data));
+const TODOS_URL = 'https://5dd3d5ba8b5e080014dc4bfa.mockapi.io/todos/';
 
-// 1) Pending
-// 2) Resolved
-// 3) Rejected
+const containerEl = document.getElementById('container');
+const taskTitleInput = document.getElementById('taskTitle');
 
-// document.addEventListener('click', function () {});
+containerEl.addEventListener('click', onContainerClick);
+document.getElementById('taskForm').addEventListener('submit', onFormSubmit);
 
-// function rec(i) {
-//     console.log(i);
-//     rec(i + 1);
-// }
+let tasksList = [];
 
-// rec(0);
+function onFormSubmit(e) {
+    e.preventDefault();
+    submitForm();
+}
 
-// setInterval(function () {
-//     console.log('long function 100ms');
-// }, 50);
+function onContainerClick(e) {
+    switch (true) {
+        case e.target.tagName === 'LI':
+            toggleTask(e.target.dataset.id);
+            break;
+        case e.target.tagName === 'SPAN':
+            deleteTask(e.target.parentElement.dataset.id);
+            break;
+    }
+}
 
-// function onTimeout() {
-//     console.log('long function 100ms');
-//     setTimeout(onTimeout, 50);
-// }
+init();
+function init() {
+    console.log('init');
+    getList();
+}
 
-// setTimeout(onTimeout, 50);
+function getList() {
+    return fetch(TODOS_URL)
+        .then((res) => res.json())
+        .then((data) => (tasksList = data))
+        .then(renderTodos);
+}
 
-// new Accordeon(document.querySelector('#container'));
+function renderTodos(list) {
+    console.log(list);
+
+    containerEl.innerHTML = list
+        .map(
+            (task) =>
+                `<li class="${task.isDone ? 'done' : ''}" data-id="${
+                    task.id
+                }">${task.title} <span>X</span></li>`
+        )
+        .join('');
+}
+
+// ====
+function submitForm() {
+    const task = {
+        title: taskTitleInput.value,
+        isDone: false,
+    };
+
+    addTask(task).then(getList);
+}
+
+function addTask(task) {
+    console.log(task);
+
+    return fetch(TODOS_URL, {
+        method: 'POST',
+        body: JSON.stringify(task),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+}
+
+// ====
+function toggleTask(id) {
+    const task = tasksList.find((item) => item.id === id);
+
+    task.isDone = !task.isDone;
+
+    fetch(TODOS_URL + task.id, {
+        method: 'PUT',
+        body: JSON.stringify(task),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    }).then(getList);
+}
+// ====
+function deleteTask(id) {
+    fetch(TODOS_URL + id, {
+        method: 'DELETE',
+    }).then(getList);
+}
+
+// ----- 1) рендер списка
+// ----- 2) добавление новых
+// ----- 3) переключение состояния
+// 4) удаление
 
 // http(s)
 
@@ -68,3 +138,16 @@ fetch('https://jsonplaceholder.typicode.com/posts')
 //     500
 //         503
 //         502
+
+// REST
+
+// apiURL/users
+
+// LIST    - GET /
+// GETONE  - GET /:id
+
+// ADD     - POST / body:{name: 'Alex', age:23} <== {id: 101, name: 'Alex', age:23}
+// full UPDATE     - PUT /:id body:{id: :id, name: 'Bob', age:23} <== {id: :id, name: 'Bob', age:23}
+// // Partial UPDATE  - PATCH /:id body:{name: 'Bob'} <== {id: :id, name: 'Bob', age:23}
+
+// DELETE  - DELETE /:id

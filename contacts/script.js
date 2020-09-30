@@ -32,19 +32,11 @@ function onListElClick(e) {
 // Инициализация приложения при старте
 function init() {
     // восстанавливаем данные из хранилища
-    // restoreData();
+    restoreData();
     // рендерим список, который взяли из хранилища
-    // renderList(list);
-
-    getData();
+    renderList(list);
 
     console.log('list', list);
-}
-
-function getData() {
-    fetch('https://jsonplaceholder.typicode.com/photos?albumId=3')
-        .then((res) => res.json())
-        .then((data) => renderList(data));
 }
 
 // Сохранение юзера
