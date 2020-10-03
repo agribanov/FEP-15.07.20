@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Contacts</title>
+        <link rel="stylesheet" href="./styles.css" />
+        <script src="./script.js" defer></script>
+    </head>
+    <body>
+        <h1>Contacts</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Phone</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="contactsList"></tbody>
+            <tfoot>
+                <tr>
+                    <td>
+                        <input type="hidden" id="contactId" />
+                        <input type="text" id="contactName" />
+                    </td>
+                    <td><input type="text" id="contactSurname" /></td>
+                    <td><input type="text" id="contactPhone" /></td>
+                    <td><button id="addContactBtn">Save</button></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <script type="text/template" id="contactTemplate">
+            <tr class="item" data-id="{{id}}">
+                <td>{{name}}</td>
+                <td>{{surname}}</td>
+                <td>{{phone}}</td>
+                <td>
+                    <button class="edit-btn">Edit</button>
+                    <button class="delete-btn">Delete</button>
+                </td>
+            </tr>
+        </script>
+    </body>
+</html>
