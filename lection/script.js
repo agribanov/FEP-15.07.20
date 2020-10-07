@@ -1,153 +1,156 @@
-const TODOS_URL = 'https://5dd3d5ba8b5e080014dc4bfa.mockapi.io/todos/';
+$(() => {
+    const TODOS_URL = 'https://5dd3d5ba8b5e080014dc4bfa.mockapi.io/todos/';
 
-const containerEl = document.getElementById('container');
-const taskTitleInput = document.getElementById('taskTitle');
+    const $container = $('#container');
+    const $taskTitleInput = $('#taskTitle');
 
-containerEl.addEventListener('click', onContainerClick);
-document.getElementById('taskForm').addEventListener('submit', onFormSubmit);
+    $container.on('click', 'li', onLiClick);
+    $container.on('click', 'span', onDeleteClick);
+    $('#taskForm').on('submit', onFormSubmit);
 
-let tasksList = [];
+    let tasksList = [];
 
-function onFormSubmit(e) {
-    e.preventDefault();
-    submitForm();
-}
-
-function onContainerClick(e) {
-    switch (true) {
-        case e.target.tagName === 'LI':
-            toggleTask(e.target.dataset.id);
-            break;
-        case e.target.tagName === 'SPAN':
-            deleteTask(e.target.parentElement.dataset.id);
-            break;
+    function onFormSubmit(e) {
+        e.preventDefault();
+        submitForm();
     }
-}
 
-init();
-function init() {
-    console.log('init');
-    getList();
-}
+    function onLiClick() {
+        const id = $(this).data('id');
+        toggleTask(id);
+    }
+    function onDeleteClick(e) {
+        e.stopPropagation();
+        const id = $(this).parent().data('id');
+        deleteTask(id);
+    }
 
-function getList() {
-    return fetch(TODOS_URL)
-        .then((res) => res.json())
-        .then((data) => (tasksList = data))
-        .then(renderTodos);
-}
+    init();
+    function init() {
+        getList();
+    }
 
-function renderTodos(list) {
-    console.log(list);
+    function getList() {
+        return fetch(TODOS_URL)
+            .then((res) => res.json())
+            .then((data) => (tasksList = data))
+            .then(renderTodos);
+    }
 
-    containerEl.innerHTML = list
-        .map(
-            (task) =>
-                `<li class="${task.isDone ? 'done' : ''}" data-id="${
-                    task.id
-                }">${task.title} <span>X</span></li>`
-        )
-        .join('');
-}
+    function renderTodos(list) {
+        console.log(list);
 
-// ====
-function submitForm() {
-    const task = {
-        title: taskTitleInput.value,
-        isDone: false,
-    };
+        $container.html(
+            list
+                .map(
+                    (task) =>
+                        `<li class="${task.isDone ? 'done' : ''}" data-id="${
+                            task.id
+                        }">${task.title} <span>X</span></li>`
+                )
+                .join('')
+        );
+    }
 
-    addTask(task).then(getList);
-}
+    // ====
+    function submitForm() {
+        const task = {
+            title: $taskTitleInput.val(),
+            isDone: false,
+        };
 
-function addTask(task) {
-    console.log(task);
+        addTask(task).then(getList);
+    }
 
-    return fetch(TODOS_URL, {
-        method: 'POST',
-        body: JSON.stringify(task),
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
-}
+    function addTask(task) {
+        console.log(task);
 
-// ====
-function toggleTask(id) {
-    const task = tasksList.find((item) => item.id === id);
+        return fetch(TODOS_URL, {
+            method: 'POST',
+            body: JSON.stringify(task),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+    }
 
-    task.isDone = !task.isDone;
+    // ====
+    function toggleTask(id) {
+        const task = tasksList.find((item) => item.id === id);
 
-    fetch(TODOS_URL + task.id, {
-        method: 'PUT',
-        body: JSON.stringify(task),
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    }).then(getList);
-}
-// ====
-function deleteTask(id) {
-    fetch(TODOS_URL + id, {
-        method: 'DELETE',
-    }).then(getList);
-}
+        task.isDone = !task.isDone;
 
-// ----- 1) рендер списка
-// ----- 2) добавление новых
-// ----- 3) переключение состояния
-// 4) удаление
+        fetch(TODOS_URL + task.id, {
+            method: 'PUT',
+            body: JSON.stringify(task),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(getList);
+    }
+    // ====
+    function deleteTask(id) {
+        fetch(TODOS_URL + id, {
+            method: 'DELETE',
+        }).then(getList);
+    }
+});
 
-// http(s)
+// // ----- 1) рендер списка
+// // ----- 2) добавление новых
+// // ----- 3) переключение состояния
+// // 4) удаление
 
-// URL
-//     protocol http/https
-//     domain
-//     path
-//     queryParameter
+// // http(s)
 
-// METHOD
-//     GET
-//     POST *
-//     PUT *
-//     DELETE
-//     OPTIONS
-//     PATCH *
+// // URL
+// //     protocol http/https
+// //     domain
+// //     path
+// //     queryParameter
 
-// BODY - тело
+// // METHOD
+// //     GET
+// //     POST *
+// //     PUT *
+// //     DELETE
+// //     OPTIONS
+// //     PATCH *
 
-// HEADERS - Служебная информация
+// // BODY - тело
 
-// STATUS
-//     100
-//         101
+// // HEADERS - Служебная информация
 
-//     200
-//         204
-//         201
+// // STATUS
+// //     100
+// //         101
 
-//     300
-//         301
-//         302
+// //     200
+// //         204
+// //         201
 
-//     400
-//         404
-//         401
-//         403
+// //     300
+// //         301
+// //         302
 
-//     500
-//         503
-//         502
+// //     400
+// //         404
+// //         401
+// //         403
 
-// REST
+// //     500
+// //         503
+// //         502
 
-// apiURL/users
+// // REST
 
-// LIST    - GET /
-// GETONE  - GET /:id
+// // apiURL/users
 
-// ADD     - POST / body:{name: 'Alex', age:23} <== {id: 101, name: 'Alex', age:23}
-// full UPDATE     - PUT /:id body:{id: :id, name: 'Bob', age:23} <== {id: :id, name: 'Bob', age:23}
-// // Partial UPDATE  - PATCH /:id body:{name: 'Bob'} <== {id: :id, name: 'Bob', age:23}
+// // LIST    - GET /
+// // GETONE  - GET /:id
 
-// DELETE  - DELETE /:id
+// // ADD     - POST / body:{name: 'Alex', age:23} <== {id: 101, name: 'Alex', age:23}
+// // full UPDATE     - PUT /:id body:{id: :id, name: 'Bob', age:23} <== {id: :id, name: 'Bob', age:23}
+// // // Partial UPDATE  - PATCH /:id body:{name: 'Bob'} <== {id: :id, name: 'Bob', age:23}
+
+// // DELETE  - DELETE /:id
