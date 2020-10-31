@@ -11,8 +11,8 @@ function copyHtml() {
 function copyJs() {
     return src('./src/**/*.js')
         .pipe(concat('app.js'))
-        .pipe(babel())
-        .pipe(uglify())
+        // .pipe(babel())
+        // .pipe(uglify())
         .pipe(dest('./dist/'));
 }
 

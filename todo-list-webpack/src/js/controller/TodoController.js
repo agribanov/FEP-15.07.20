@@ -1,4 +1,8 @@
-class TodoController{
+import TodoListView from '../view/TodoListView';
+import TodoFormView from '../view/TodoFormView';
+import TodoCollection from '../model/TodoCollection';
+
+export default class TodoController{
     constructor(){
         this.listview = new TodoListView({
             onToggle: this.onToggle.bind(this),

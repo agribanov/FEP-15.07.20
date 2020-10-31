@@ -1,5 +1,3 @@
-class HEllo{
-    world(){
-        console.log()
-    }
-}
+import { hello } from './another';
+
+hello();

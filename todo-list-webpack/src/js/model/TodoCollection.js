@@ -1,6 +1,8 @@
-class TodoCollection{
+import {TODOS_URL} from '../config';
+
+export default class TodoCollection{
     constructor(){
-        console.log('collection created');
+        console.log('collection created', TODOS_URL);
 
         this.list = [];
     }
