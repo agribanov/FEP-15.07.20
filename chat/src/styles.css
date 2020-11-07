@@ -1,0 +1,8 @@
+.log div {
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+}
+
+.log div.message {
+    opacity: 1;
+}
